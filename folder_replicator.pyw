@@ -76,11 +76,15 @@ class FileWalkerWindow(Frame):
         start = len(self.indir.get())
         self.output.insert(END, '\n')
         log = open("log.txt",'w')
+        file_log = []
         for root, dirs, files in os.walk(self.indir.get()):
             if not dirs:
                 roots.append(root[start:])
                 self.output.insert(END, root[start:]+'\n')
                 log.write(root[start:]+'\n')
+            if files:
+                for f in files:
+                    file_log += str(root + f + '\n')
         
         
         self.output.insert(END, '\n\nCreating directories: \n')
@@ -89,6 +93,10 @@ class FileWalkerWindow(Frame):
             self.output.insert(END, self.outdir.get() + root + '\n')
             os.makedirs(self.outdir.get() + root)
             log.write(self.outdir.get() + root + '\n')
+
+        log.write('\n\nFiles:\n')
+        for f in file_log:
+            log.write(f)
         log.close()
             
             
